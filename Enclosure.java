@@ -39,7 +39,7 @@ public class Enclosure {
     /**
      * Gets the number of animals currently in the enclosure.
      *
-     * @return The current count of stored animals.
+     * @return The number of stored animals.
      */
     public int getAnimalCount() {
         return animals.size();
