@@ -15,15 +15,24 @@ public class FarmSimulator {
         }
 
         new Thread(() -> {
-            Random rand = new Random();
+            Random randgen = new Random();
+            long nextDeliveryTick = tickManager.getTickCount() + (int) (2 * randgen.nextDouble() * 100);
+
             while (true) {
                 try {
-                    Thread.sleep(10000);
-                    AnimalType[] delivery = new AnimalType[15];
-                    for (int i = 0; i < 15; i++) {
-                        delivery[i] = AnimalType.values()[rand.nextInt(AnimalType.values().length)];
+                    tickManager.waitForNextTick(nextDeliveryTick);
+                    
+                    AnimalType[] delivery = new AnimalType[10];
+                    for (int i = 0; i < 10; i++) {
+                        delivery[i] = AnimalType.values()[randgen.nextInt(AnimalType.values().length)];
                     }
-                    farm.getEnclosure().addAnimals(delivery);
+
+                    farm.getEnclosure().addAnimals(delivery, tickManager.getTickCount());
+
+                    // Planifier la prochaine livraison
+                    nextDeliveryTick = tickManager.getTickCount() + (int) (2 * randgen.nextDouble() * 100);
+
+
                 } catch (InterruptedException e) {
                     break;
                 }
